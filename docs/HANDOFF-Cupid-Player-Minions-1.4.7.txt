@@ -1,28 +1,31 @@
 UwU Dimension 1.4.7 — Cupid Bow Player-Minions Handoff
 
 Repositories and build
-- Destination repository: https://github.com/anyasultz/zJars (the current code copy is on its main branch).
+- Destination: https://github.com/anyasultz/zJars, main branch.
 - Original source: https://github.com/WeepingAngeIs/UwU_dimension/tree/feature/uwu-cupid-player-minions-1.4.7
-- Source revision copied: d9d026cbf06556ead8a857d2fbecb5ad40b44d66
-- Hosted GitHub Actions build run 2 succeeded and produced UwU-Dimension-1.21.1-1.4.7.jar; the JAR is included in artifacts/.
+- Source revision copied: d9d026cbf06556ead8a857d2fbecb5ad40b44d66.
+- zJars setup commit: 771fc658f432c011246844fce784f8cee92ece9f.
+- Hosted zJars build succeeded on that commit and packaged UwU-Dimension-1.21.1-1.4.7.jar into artifacts/.
 - Target: Minecraft 1.21.1, NeoForge 21.1.249, Java 21.
 
+Build setup
+The project already has the NeoForge ModDev Gradle plugin and version configuration in build.gradle. Gradle downloads the matching Minecraft and NeoForge compile artifacts when it builds; they should not be checked into the repo. The wrapper must be executable for GitHub/Linux builds. See docs/BUILD.md. The basic jar build does not need a local libs/ folder; optional modpack JARs are fetched by ci/get-mods.sh for the fuller development client and expedition workflows.
+
 Standalone requirement
-Keep the Cupid charm and minion feature implemented inside UwU Dimension using Minecraft and NeoForge. Do not add a dependency on Simply Swords, Ice and Fire, RLCraft, or another mod for the Cupid feature. The existing mod has established pack dependencies described in UwU-Dimension-README.md; preserve those unless separately asked to change them. The user's CurseForge profile and other mod JARs are not required for this code work. Simply Swords and Ice and Fire were mentioned only as optional design references; Ice and Fire's Siren pull behavior does not meet the requested minion behavior.
+Keep the Cupid charm and minion feature implemented inside UwU Dimension using Minecraft and NeoForge. Do not add an external mod dependency for Cupid charm behavior. The full mod retains its established runtime dependencies documented in UwU-Dimension-README.md and the mod metadata. Simply Swords and Ice and Fire were named as optional references; Ice and Fire's Siren pull behavior does not replace the requested minion behavior.
 
 Requested behavior
-The Cupid Bow charms eligible entities, including other players, for 40 seconds. Charmed allies should follow their owner, help fight, and obey a left-click target command while the owner holds the bow. Show the familiar Minecraft animal-love effect in pastel pink. The bow description should say it befriends eligible targets.
+The Cupid Bow charms eligible entities, including other players, for 40 seconds. Charmed allies follow their owner, help fight, and obey a left-click target command while the owner holds the bow. Use the familiar Minecraft animal-love effect recolored pastel pink. The bow description should say it befriends eligible targets.
 
-Implemented in this code copy
+Implemented
 - Cupid Bow hits can charm players for 40 seconds, subject to PvP permission rules. The shooter, creative players, and spectators are excluded.
-- Charmed players receive client-control packets to follow their owner or pursue a marked target; the server handles their attacks. Charmed mobs also receive the target command.
+- Charmed players receive client-control packets to follow their owner or pursue a marked target; the server handles their attacks. Charmed mobs receive the same target command.
 - Left-clicking with the Cupid Bow selects the nearest eligible living entity along the owner's unobstructed sightline and sends that owner's charmed allies after it. There is no fixed command-distance cap; selection scans entities loaded in the same dimension.
 - Charm release is handled on expiry, death, logout, and dimension change.
-- Pastel heart particles were enlarged and set to ignore the reduced-particle limiter. The tooltip and version were updated.
-- The hosted GitHub Actions workflow packages the JAR.
+- Pastel heart particles were enlarged and set to ignore the reduced-particle limiter. Tooltip and mod metadata identify version 1.4.7.
 
 Remaining code work
-1. Improve player-minion following and combat in src/main/java/dev/uwu/dimension/CupidMinions.java and CupidMinionClient.java. Current movement uses client-side steering plus server-side attacks; refine behavior around obstacles while keeping it self-contained.
+1. Improve player-minion following and combat in src/main/java/dev/uwu/dimension/CupidMinions.java and CupidMinionClient.java. Movement currently uses client-side steering plus server-side attacks; refine behavior around obstacles while keeping it self-contained.
 2. Preserve owner-specific commands, nearest-in-sight selection, wall occlusion, PvP/team checks, and no fixed distance cap. Only entities loaded in the same dimension can be selected.
 3. Preserve the 40-second charm, pink hearts, and cleanup on expiry, death, logout, and dimension change while refining behavior.
 4. Keep client/server packet registration and version metadata aligned, then package updates through the hosted build workflow.
