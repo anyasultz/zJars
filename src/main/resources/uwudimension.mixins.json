@@ -1,0 +1,24 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.uwu.dimension.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "AxolotlAuraMixin",
+    "RevivalSealMixin",
+    "RealmVillagerFactoryMixin",
+    "RealmVillageStructuresMixin",
+    "RealmCureMixin",
+    "GuardianFlightConnectionMixin",
+    "GuardianHealthMixin",
+    "AcquisitionRecipeMixin",
+    "AcquisitionLootMixin",
+    "AcquisitionTradeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "ReactiveMusicRealmMixin"
+  ]
+}
